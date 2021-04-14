@@ -99,7 +99,7 @@ int main(void) {
 			{
 				printf("No es posible dividir por cero \n");
 			}
-			if(FuncReturn[2])
+			if(FuncReturn[3])
 			{
 				printf("El resultado de A*B es: %d \n", rMultiplic);
 			}
