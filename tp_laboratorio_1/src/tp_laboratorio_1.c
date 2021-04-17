@@ -36,11 +36,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-
-int sumar(int num1, int num2, int* rSuma);
-int restar(int num1, int num2, int* pTotal);
-int dividir(int num1, int num2, float* ptotal);
-int multiplicar(int num1, int num2, int* pTotal);
+#include "calculos.h"
+#include "utn_Validaciones.h"
 
 int main(void) {
 	setbuf(stdout, NULL);
@@ -48,125 +45,85 @@ int main(void) {
 	int menu;
 	int A=0;
 	int B=0;
-	int FuncReturn[5];
+	int FuncReturn[6];
 	int rSuma;
 	int rResta;
 	float rDiv;
 	int rMultiplic;
-	//int rFact;
+	long int rFact[2];
+	int controlIngresoA=0;
+	int controlIngresoB=0;
 
 	do
 	{
-	printf("1. Ingresar 1er operando ---> A=%d \n",A);
-	printf("2. Ingresar 2do operando ---> B=%d \n",B);
-	printf("3. Calcular todas las operaciones. \n");
-	printf("4. Informar resultados. \n");
-	printf("5. Salir. \n");
-	scanf("%d", &menu);
+		printf("\n1. Ingresar 1er operando ---> A = %d \n",A);
+		printf("2. Ingresar 2do operando ---> B = %d \n",B);
+		printf("3. Calcular todas las operaciones. \n");
+		printf("4. Informar resultados. \n");
+		printf("5. Salir. \n");
+		scanf("%d", &menu);
 
-	switch(menu)
-	{
-		case 1:
-			printf("Ingrese un número. \n");
-			scanf("%d", &A);
-			break;
-		case 2:
-			printf("Ingrese un número. \n");
-			fflush(stdin);
-			scanf("%d", &B);
-			break;
-		case 3:
-			FuncReturn[0]=sumar(A, B, &rSuma);
-			FuncReturn[1]=restar(A, B, &rResta);
-			FuncReturn[2]=dividir(A, B, &rDiv);
-			FuncReturn[3]=multiplicar(A, B, &rMultiplic);
-			printf("Calculos realizados. \n");
-			break;
-		case 4:
-			if(FuncReturn[0])
-			{
-				printf("El resultado de A+B es: %d \n", rSuma);
-			}
-			if(FuncReturn[1])
-			{
-			printf("El resultado de A-B es: %d \n", rResta);
-			}
-			if(FuncReturn[2])
-			{
-				printf("El resultado de A/B es: %.4f \n", rDiv);
-			}
-			else
-			{
-				printf("No es posible dividir por cero \n");
-			}
-			if(FuncReturn[3])
-			{
-				printf("El resultado de A*B es: %d \n", rMultiplic);
-			}
-			break;
-		case 5:
-			printf("Cerró la calculadora. \n");
-			break;
-		default:
-			printf("Ingrese una de las opciones dadas. \n");
-			break;
-	}
-
+		switch(menu)
+		{
+			case 1:
+				utn_getNumero(&A, "Ingrese el primer operando: \n", "El dato ingresado no es un número entero. \n", -20000, 20000, 1000);
+				controlIngresoA++;
+				break;
+			case 2:
+				utn_getNumero(&B, "Ingrese el segundo operando: \n", "El dato ingresado no es un número entero. \n", -20000, 20000, 1000);
+				controlIngresoB++;
+				break;
+			case 3:
+				if(controlIngresoA!=0 && controlIngresoB!=0)
+				{
+					FuncReturn[0]=sumar(A, B, &rSuma);
+					FuncReturn[1]=restar(A, B, &rResta);
+					FuncReturn[2]=dividir(A, B, &rDiv);
+					FuncReturn[3]=multiplicar(A, B, &rMultiplic);
+					FuncReturn[4]=factorial(A, &rFact[0]);
+					FuncReturn[5]=factorial(B, &rFact[1]);
+					printf("\nCalculos realizados. \n\n");
+				}
+				else
+				{
+					printf("\nPor favor, termine de ingresar los dos operandos.\n");
+				}
+				break;
+			case 4:
+				if(FuncReturn[0])
+				{
+					printf("\nEl resultado de A+B es: %d \n", rSuma);
+				}
+				if(FuncReturn[1])
+				{
+				printf("El resultado de A-B es: %d \n", rResta);
+				}
+				if(FuncReturn[2])
+				{
+					printf("El resultado de A/B es: %.4f \n", rDiv);
+				}
+				else
+				{
+					printf("No es posible dividir por cero \n");
+				}
+				if(FuncReturn[3])
+				{
+					printf("El resultado de A*B es: %d \n", rMultiplic);
+				}
+				if(FuncReturn[4] || FuncReturn[5])
+				{
+					printf("El factorial de A es: %ld y El factorial de B es: %ld\n\n", rFact[0], rFact[1]);
+				}
+				controlIngresoA=0;
+				controlIngresoB=0;
+				break;
+			case 5:
+				printf("Cerró la calculadora. Que tenga buen día!. \n");
+				break;
+			default:
+				printf("\nIngrese una de las opciones posibles. \n");
+				break;
+		} //Fin de Switch
 	} while(menu!=5); //Fin del Do while.
 	return 0;
 }// fin del main
-
-
-
-int sumar(int num1, int num2, int* pTotal)
-{
-	int ret=0;
-	if(pTotal!=NULL)
-	{
-		if(num1>0 || num2>0)
-		{
-			*pTotal=num1+num2;
-			ret=1;
-		}
-	}
-	return ret;
-}
-int restar(int num1, int num2, int* pTotal)
-{
-	int ret=0;
-	if(pTotal!=NULL)
-	{
-		if(num1>0 || num2>0)
-		{
-			*pTotal=num1-num2;
-			ret=1;
-		}
-	}
-	return ret;
-}
-int dividir(int num1, int num2, float* pTotal)
-{
-	int ret=0;
-	if(pTotal!=NULL)
-	{
-		if(num2!=0)
-		{
-			*pTotal=num1/num2;
-			ret=1;
-		}
-	}
-	return ret;
-}
-int multiplicar(int num1, int num2, int* pTotal)
-{
-	int ret=0;
-	if(pTotal!=NULL)
-	{
-		if(num1>0 || num2>0)
-		{
-			*pTotal=num1*num2;
-			ret=1;
-		}
-	}
-	return ret;
-}
