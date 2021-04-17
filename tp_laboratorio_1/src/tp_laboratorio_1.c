@@ -53,6 +53,7 @@ int main(void) {
 	long int rFact[2];
 	int controlIngresoA=0;
 	int controlIngresoB=0;
+	int controlCalculos=0;
 
 	do
 	{
@@ -66,11 +67,11 @@ int main(void) {
 		switch(menu)
 		{
 			case 1:
-				utn_getNumero(&A, "Ingrese el primer operando: \n", "El dato ingresado no es un número entero. \n", -20000, 20000, 1000);
+				utn_getNumero(&A, "\nIngrese el primer operando: \n", "\nEl dato ingresado no es un número entero. \n", -20000, 20000, 1000);
 				controlIngresoA++;
 				break;
 			case 2:
-				utn_getNumero(&B, "Ingrese el segundo operando: \n", "El dato ingresado no es un número entero. \n", -20000, 20000, 1000);
+				utn_getNumero(&B, "\nIngrese el segundo operando: \n", "\nEl dato ingresado no es un número entero. \n", -20000, 20000, 1000);
 				controlIngresoB++;
 				break;
 			case 3:
@@ -83,6 +84,7 @@ int main(void) {
 					FuncReturn[4]=factorial(A, &rFact[0]);
 					FuncReturn[5]=factorial(B, &rFact[1]);
 					printf("\nCalculos realizados. \n\n");
+					controlCalculos++;
 				}
 				else
 				{
@@ -90,32 +92,49 @@ int main(void) {
 				}
 				break;
 			case 4:
-				if(FuncReturn[0])
+				if(controlIngresoA!=0 && controlIngresoB!=0)
 				{
-					printf("\nEl resultado de A+B es: %d \n", rSuma);
-				}
-				if(FuncReturn[1])
-				{
-				printf("El resultado de A-B es: %d \n", rResta);
-				}
-				if(FuncReturn[2])
-				{
-					printf("El resultado de A/B es: %.4f \n", rDiv);
+					if(controlCalculos!=0)
+					{
+						if(FuncReturn[0])
+						{
+							printf("\nEl resultado de A+B es: %d \n", rSuma);
+						}
+						if(FuncReturn[1])
+						{
+						printf("El resultado de A-B es: %d \n", rResta);
+						}
+						if(FuncReturn[2])
+						{
+							printf("El resultado de A/B es: %.4f \n", rDiv);
+						}
+						else
+						{
+							printf("No es posible dividir por cero \n");
+						}
+						if(FuncReturn[3])
+						{
+							printf("El resultado de A*B es: %d \n", rMultiplic);
+						}
+						if(FuncReturn[4] || FuncReturn[5])
+						{
+							printf("El factorial de A es: %ld y El factorial de B es: %ld\n\n", rFact[0], rFact[1]);
+						}
+						controlIngresoA=0;
+						controlIngresoB=0;
+						A=0;
+						B=0;
+						controlCalculos=0;
+					}
+					else
+					{
+						printf("\nPrimero debe seleccionar la opción 3. Calcular todas las operaciones. \n");
+					}
 				}
 				else
 				{
-					printf("No es posible dividir por cero \n");
+					printf("\nPor favor, termine de ingresar los dos operandos.\n");
 				}
-				if(FuncReturn[3])
-				{
-					printf("El resultado de A*B es: %d \n", rMultiplic);
-				}
-				if(FuncReturn[4] || FuncReturn[5])
-				{
-					printf("El factorial de A es: %ld y El factorial de B es: %ld\n\n", rFact[0], rFact[1]);
-				}
-				controlIngresoA=0;
-				controlIngresoB=0;
 				break;
 			case 5:
 				printf("Cerró la calculadora. Que tenga buen día!. \n");
