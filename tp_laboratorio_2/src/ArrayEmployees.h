@@ -108,4 +108,16 @@ void hardcodearEmployee(Employee list[], int len, int* firstAdd);
  *
  */
 int sortEmployeeAlphabetic(Employee list[],int len);
+
+/*
+ *
+ */
+int salaryAnalysis(float* total, float* average, Employee list[], int len);
+
+/*
+ *
+ */
+int salaryReport(Employee list[], int len);
+
+
 #endif /* ARRAYEMPLOYEES_H_ */

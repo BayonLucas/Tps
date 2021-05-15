@@ -21,6 +21,7 @@ int main(void) {
 	int flagPrimerIngresado=0;
 	int contadorEmpleadoId=0;
 	Employee dEmpleado[maxEmployee];
+	int menuInformes;
 
 
 	initEmployees(dEmpleado, maxEmployee);
@@ -67,7 +68,34 @@ int main(void) {
 			case 4:
 				if(flagPrimerIngresado==1)
 				{
-					sortEmployeeAlphabetic(dEmpleado, maxEmployee);
+					do
+					{
+						printf("\n=====================================\n");
+						printf("Ingrese alguna de las sig. opciones: \n");
+						printf("1. Listado de empleados.\n");
+						printf("2. informe de salarios.\n\n");
+						printf("3. Salir.\n");
+						printf("\n=====================================\n");
+						scanf("%d", &menuInformes);
+
+						switch(menuInformes)
+						{
+						case 1:
+							sortEmployeeAlphabetic(dEmpleado, maxEmployee);
+							break;
+						case 2:
+							salaryReport(dEmpleado, maxEmployee);
+							break;
+						case 3:
+							printf("\nVolviendo al menu principal.\n");
+							break;
+						default:
+							printf("\nPor favor, Ingrese alguna de las opciones dadas.\n\n");
+							break;
+						}
+
+
+					} while(menuInformes!=3);
 				}
 				else
 				{

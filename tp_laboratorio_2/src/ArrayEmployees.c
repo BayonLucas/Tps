@@ -170,7 +170,7 @@ void printEmployee(Employee list[], int i)
 	char auxSector[15];
 
 	findSectorById(auxSector, list,i);
-	printf("%-3d  -  %-15s  -  %-15s  -  %.2f  -  %-15s\n", list[i].id, list[i].lastName,list[i].name, list[i].salary, auxSector);
+	printf("%-3d  -  %-15s  -  %-15s  -  $%.2f  -  %-15s\n", list[i].id, list[i].lastName,list[i].name, list[i].salary, auxSector);
 }
 
 void findSectorById(char* tipoR, Employee list[],int posicion)
@@ -262,7 +262,6 @@ int sortEmployeeAlphabetic(Employee list[],int len)
 {
 	int ret=-1;
 	int order;
-	//int auxCtrl;
 
 	if(list!=NULL && len>0)
 	{
@@ -273,7 +272,6 @@ int sortEmployeeAlphabetic(Employee list[],int len)
 
 		if(order==1 || order==2)
 		{
-			//printf("\n%d\n",order);
 			sortEmployees(list, len, order);
 			printEmployees(list, len);
 			ret=0;
@@ -393,5 +391,74 @@ void hardcodearEmployee(Employee list[], int len, int* firstAdd)
 	}
 	*firstAdd=1;
 }
+
+int salaryAnalysis(float* total, float* average, Employee list[], int len)
+{
+	int ret=-1;
+	int i;
+	float totalSalary=0;
+	int countEmployee=0;
+
+	if(list!=NULL && len>0)
+	{
+		for(i=0;i<len;i++)
+		{
+			if(list[i].isEmpty==0)
+			{
+				totalSalary=totalSalary+list[i].salary;
+				countEmployee++;
+			}
+		}
+		*total=totalSalary;
+		*average=totalSalary/countEmployee;
+		ret=0;
+	}
+	return ret;
+}
+
+int salaryReport(Employee list[], int len)
+{
+	int ret=-1;
+	float totalSalary;
+	float averageSalary;
+	int i;
+	int countEmployee=0;
+
+	if(list!=NULL && len>0)
+	{
+		salaryAnalysis(&totalSalary, &averageSalary, list, len);
+		printf("\n=======================================================================\n");
+		printf("Total salarios acumulados: $%.2f	Sueldo Promedio: $%.2f",totalSalary, averageSalary);
+		printf("-------------------------------------------------------------------------\n");
+		printf("ID	Apellido		Nombre		Sueldo		Sector	\n");
+		printf("-------------------------------------------------------------------------\n");
+		for(i=0;i<len;i++)
+		{
+			if(list[i].isEmpty==0)
+			{
+				if(list[i].salary>averageSalary)
+				{
+					countEmployee++;
+					printEmployee(list, len);
+				}
+			}
+		}
+		printf("-------------------------------------------------------------------------\n");
+		printf("Total de empleados que superan el sueldo promedio: %d", countEmployee);
+		printf("\n=======================================================================\n");
+		ret=0;
+	}
+	return ret;
+}
+
+
+
+
+
+
+
+
+
+
 
 
