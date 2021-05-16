@@ -12,7 +12,7 @@
 #include <stdlib.h>
 #include "ArrayEmployees.h"
 
-#define maxEmployee 10
+#define maxEmployee 1000
 
 int main(void) {
 	setbuf(stdout, NULL);
@@ -25,7 +25,6 @@ int main(void) {
 
 
 	initEmployees(dEmpleado, maxEmployee);
-	hardcodearEmployee(dEmpleado, maxEmployee, &flagPrimerIngresado);
 	do
 	{
 		printf("\n=====================================\n");
@@ -93,8 +92,6 @@ int main(void) {
 							printf("\nPor favor, Ingrese alguna de las opciones dadas.\n\n");
 							break;
 						}
-
-
 					} while(menuInformes!=3);
 				}
 				else

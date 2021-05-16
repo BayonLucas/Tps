@@ -301,7 +301,7 @@ int sortEmployees(Employee list[], int len, int order)
 				{
 					for(j=i+1;j<len;j++)
 					{
-						if(list[i].isEmpty==0)
+						if(list[j].isEmpty==0)
 						{
 							if(strcmp(list[i].lastName,list[j].lastName)>0)
 							{
@@ -334,7 +334,7 @@ int sortEmployees(Employee list[], int len, int order)
 				{
 					for(j=i+1;j<len;j++)
 					{
-						if(list[i].isEmpty==0)
+						if(list[j].isEmpty==0)
 						{
 							if(strcmp(list[i].lastName,list[j].lastName)<0)
 							{
@@ -369,27 +369,6 @@ int sortEmployees(Employee list[], int len, int order)
 	}
 
 	return ret;
-}
-
-void hardcodearEmployee(Employee list[], int len, int* firstAdd)
-{
-	int i;
-	char nombre[][20]={"Lucas","Aldana","Ornela","Pedro","Agustin","Matias","Gabriel","Maria","Raul","Yanina"};
-	char apellido[][20]={"Bayon","Coronel","Perez","Rofuiguez","Suares","Messi","Bayon","Ordoñes","Felfort","Coronel"};
-	float salary[]={12500.23, 25345.58, 31252.2, 20000, 31252.2, 18005.99, 28300.20, 16999.99, 27654.3, 30000};
-	int sector[]={1, 4, 3, 1, 3, 3, 2, 2, 4, 3};
-	int id[]={1,2,3,4,5,6,7,8,9,10};
-
-	for(i=0;i<len;i++)
-	{
-		strcpy(list[i].name, nombre[i]);
-		strcpy(list[i].lastName, apellido[i]);
-		list[i].id=id[i];
-		list[i].sector=sector[i];
-		list[i].salary=salary[i];
-		list[i].isEmpty=0;
-	}
-	*firstAdd=1;
 }
 
 int salaryAnalysis(float* total, float* average, Employee list[], int len)
@@ -428,7 +407,7 @@ int salaryReport(Employee list[], int len)
 	{
 		salaryAnalysis(&totalSalary, &averageSalary, list, len);
 		printf("\n=======================================================================\n");
-		printf("Total salarios acumulados: $%.2f	Sueldo Promedio: $%.2f",totalSalary, averageSalary);
+		printf("Total salarios acumulados: $%.2f	Sueldo Promedio: $%.2f\n",totalSalary, averageSalary);
 		printf("-------------------------------------------------------------------------\n");
 		printf("ID	Apellido		Nombre		Sueldo		Sector	\n");
 		printf("-------------------------------------------------------------------------\n");
@@ -439,7 +418,7 @@ int salaryReport(Employee list[], int len)
 				if(list[i].salary>averageSalary)
 				{
 					countEmployee++;
-					printEmployee(list, len);
+					printEmployee(list, i);
 				}
 			}
 		}
@@ -451,6 +430,27 @@ int salaryReport(Employee list[], int len)
 	return ret;
 }
 
+void hardcodearEmployee(Employee list[], int len, int* firstAdd, int* countAdd)
+{
+	int i;
+	char nombre[][20]={"Lucas","Aldana","Ornela","Pedro","Agustin","Matias","Gabriel","Maria","Raul","Yanina"};
+	char apellido[][20]={"Bayon","Coronel","Perez","Rofuiguez","Suares","Messi","Bayon","Ordoñes","Felfort","Coronel"};
+	float salary[]={12500.23, 25345.58, 31252.2, 20000, 31252.2, 18005.99, 28300.20, 16999.99, 27654.3, 30000};
+	int sector[]={1, 4, 3, 1, 3, 3, 2, 2, 4, 3};
+	int id[]={1,2,3,4,5,6,7,8,9,10};
+
+	for(i=0;i<len;i++)
+	{
+		strcpy(list[i].name, nombre[i]);
+		strcpy(list[i].lastName, apellido[i]);
+		list[i].id=id[i];
+		list[i].sector=sector[i];
+		list[i].salary=salary[i];
+		list[i].isEmpty=0;
+	}
+	*firstAdd=1;
+	*countAdd=10;
+}
 
 
 

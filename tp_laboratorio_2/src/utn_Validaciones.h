@@ -58,33 +58,49 @@ int utn_getStringAlpha(char* input,char mensaje[],char eMensaje[],int cantAproxC
  */
 int esPalabra(char* cadena);
 
-/*
- *
+/*bierf Se pide un string y se corrobora que el dato recibido tenga el formato de un cuit o cuil
+ * param1 recibe una dirección de memoria donde se colocara el valor del string.
+ * param2 recibe el texto deseado a mostrar para solicitar el ingreso del dato.
+ * param3 recibe el mensaje error en caso de que lo que ingresó sea distinto al tipo de dato solicitado.
+ * param4 recibe la cantidad de reintento que se le permitiran al usuario en cuestión.
+ * la función retorna -1 si no funcionó. Caso contrario, retornará 0. Retorna 1 si el dato ingresado tiene mas caracteres de los que se informó e el param4.
  */
 int utn_getCuit(char input[],char mensaje[],char eMensaje[],int reintentos);
 
-/*
- *
+/*brief Corrobora si un string es un posible cuit/cuil
+ *param1 recibe el string a analizar
+ *la funcion retorna -1 en caso de que el string no sea un posible cuit/cuil. Retorna 0 si esta todo ok
  */
 int esCuit(char* cadena);
 
-/*
- *
+/* Ajusta la memoria que ocupa un string
+ *param1 recibe una cadena de caracteres a acortar
+ *param2 recibe la longitud deseada
+ *la funcion retorna -1 en caso de que registre NULL respecto del array. Retorna 0 si esta todo ok.
  */
 int myGets(char* cadena, int longitud);
 
-/*
- *
+/*brief analiza si es flotante.
+ *param1 recibe la cadena de caracteres.
+ *param2 recibe la longitud ideal del array
+ * la funcion retorna -1 en caso de recibir NULL respecto del array. Caso contrario, recibe 0.
  */
 int esFlotante(char* cadena, int longitud);
 
-/*
- *
+/*brief transforma una cadena de caracteres a formato float is se dan las condiciones necesarias
+ *param1 recibe la direccion de memoria para la asignacion del valor ya procesado
+ * la funcion retorna -1 en caso de recibir NULL respecto del array. Caso contrario, recibe 0.
  */
 int getFloat(float* pResultado);
 
-/*
- *
+/*brief Pide al usuario un numero decimal en formato char para su validacion y respectiva asignacion por referencia.
+ * param1 recibe una dirección de memoria donde se colocara el valor del flotante.
+ * param2 recibe el texto deseado a mostrar para solicitar el ingreso del dato.
+ * param3 recibe el mensaje error en caso de que lo que ingresó sea distinto al tipo de dato solicitado.
+ * param4 recibe el valor minimo del dato a ingresar.
+ * param5 recibe el valor maximo del dato a ingresar.
+ * param6 recibe la cantidad de reintento que se le permitiran al usuario en cuestión.
+ * la función retorna -1 si no funcionó. Caso contrario, retornará 0.
  */
 int utn_getNumeroFlotante(float* pResultado,char* mensaje,char* eMensaje,float minimo,float maximo,int reintentos);
 
@@ -113,8 +129,12 @@ void swapEnterosAsc(int x, int y, int* pX, int* pY);
  */
 void swapFloatAsc(float x, float y, float* pX, float* pY);
 
-/*brief
- *
+/*brief Intectambia los valores de 2 variables de tipo char entre si
+ *param1 recibe el primer caracter
+ *param2 recibe el segundo caracter
+ *param3 recibe la direccion de memoria del primer caracter
+ *param4 recibe la direccion de memoria del segundo caracter
+ *La funcion no tiene retorno
  */
 void swapChar(char x, char y, char* pX, char* pY);
 
