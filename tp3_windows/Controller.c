@@ -259,7 +259,7 @@ int controller_addEmployee(LinkedList* pArrayListEmployee)
 				}
 				else
 				{
-					printf("El id del nuevo empleado es: %d",auxId);
+					printf("El id del nuevo empleado es: %d\n\n",auxId);
 				}
 			}
 		}
@@ -275,12 +275,18 @@ int controller_addEmployee(LinkedList* pArrayListEmployee)
 int controller_editEmployee(LinkedList* pArrayListEmployee)
 {
 	int ret=-1;
+	int idMax;
+	int idModif;
 
 	if(pArrayListEmployee!=NULL )
 	{
 		if(ll_isEmpty(pArrayListEmployee)==0)
 		{
+			idMax=getLastId(pArrayListEmployee);
+			if(utn_getNumero(&idModif, "Ingrese el id del Empleado a modificar\n", "Error: Ingrese un id activo\n", 0, idMax, 3)==0)
+			{
 
+			}
 
 
 
@@ -328,23 +334,30 @@ int controller_ListEmployee(LinkedList* pArrayListEmployee)
 
 	if(pArrayListEmployee!=NULL)
 	{
-		printf("\n=========================================================================\n");
-		printf("id	-	Nombre			-	Horas	-	Sueldo\n");
-		printf("=========================================================================\n");
-		for(i=0;i<ll_len(pArrayListEmployee);i++)
+		if(ll_isEmpty(pArrayListEmployee)==0)
 		{
-			dirEmployee=ll_get(pArrayListEmployee, i);
-			if(dirEmployee!=NULL)
+			printf("\n=========================================================================\n");
+			printf("id	-	Nombre			-	Horas	-	Sueldo\n");
+			printf("=========================================================================\n");
+			for(i=0;i<ll_len(pArrayListEmployee);i++)
 			{
-				employee_show(dirEmployee);
-				ret=0;
+				dirEmployee=ll_get(pArrayListEmployee, i);
+				if(dirEmployee!=NULL)
+				{
+					employee_show(dirEmployee);
+					ret=0;
+				}
+				else
+				{
+					ret=-1;
+					printf("\nError en la carga de info.\n");
+					break;
+				}
 			}
-			else
-			{
-				ret=-1;
-				printf("\nError en la carga de info.\n");
-				break;
-			}
+		}
+		else
+		{
+			printf("\nDebe de haber al menos un empleado dado de alta para poder mostrar algo.\n");
 		}
 	}
 
@@ -437,6 +450,38 @@ int getLastId(LinkedList* pArrayListEmployee)
 	}
 	return retId;
 }
+
+Employee* getEmployeeById(LinkedList* pArrayListEmployee, int id)
+{
+	Employee* returnEmployee=NULL;
+	int i;
+	int idCmp;
+	Employee* auxEmp=NULL;
+
+	if(pArrayListEmployee!=NULL && id>=0)
+	{
+		if(ll_isEmpty(pArrayListEmployee)==0)
+		{
+			for(i=0;i<ll_len(pArrayListEmployee);i++)
+			{
+				auxEmp=ll_get(pArrayListEmployee, i);
+				if(returnEmployee!=NULL)
+				{
+					employee_getId(auxEmp, &idCmp);
+					if(idCmp==id)
+					{
+						returnEmployee=auxEmp;
+						break;
+					}
+				}
+			}
+		}
+	}
+	return returnEmployee;
+}
+
+
+
 
 
 //	int i;

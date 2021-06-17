@@ -88,3 +88,8 @@ int controller_getLastId( LinkedList* pArrayListEmployee);
  *
  */
 int getLastId(LinkedList* pArrayListEmployee);
+
+/*
+ *
+ */
+Employee* getEmployeeById(LinkedList* pArrayListEmployee, int id);

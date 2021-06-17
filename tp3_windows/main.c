@@ -30,14 +30,14 @@ int main()
     	printf("\n******************************************************************************************\n");
     	printf("Ingrese la opcion Deseada: \n");
     	printf("1. Cargar los datos de los empleados desde el archivo data.csv (modo texto).\n");
-    	printf("2. Cargar los datos de los empleados desde el archivo data.csv (modo binario).\n");
+    	printf("2. Cargar los datos de los empleados desde el archivo data.bin (modo binario).\n");
     	printf("3. Alta de empleado.\n");
     	printf("4. Modificar datos de empleado.\n");
     	printf("5. Baja de empleado.\n");
     	printf("6. Listar empleados.\n");
     	printf("7. Ordenar empleados.\n");
     	printf("8. Guardar los datos de los empleados en el archivo data.csv (modo texto).\n");
-    	printf("9. Guardar los datos de los empleados en el archivo data.csv (modo binario).\n\n");
+    	printf("9. Guardar los datos de los empleados en el archivo data.bin (modo binario).\n\n");
     	printf("10. Salir.\n");
     	printf("******************************************************************************************\n\n");
     	scanf("%d", &option);
@@ -60,7 +60,7 @@ int main()
             case 2:
             	if(flagFileLoaded==0)
 				{
-					if(controller_loadFromBinary( "dataBi.bin", listaEmpleados)==0)
+					if(controller_loadFromBinary("dataBi.bin", listaEmpleados)==0)
 					{
 						flagFileLoaded++;
 					}
@@ -87,14 +87,7 @@ int main()
 				}
                 break;
             case 6:
-            	if(ll_isEmpty(listaEmpleados)==0)
-            	{
-            		controller_ListEmployee(listaEmpleados);
-            	}
-            	else
-            	{
-            		printf("\nDebe de haber al menos un empleado dado de alta para poder mostrar algo.\n");
-            	}
+            	controller_ListEmployee(listaEmpleados);
                 break;
             case 7:
             	controller_sortEmployee(listaEmpleados);
