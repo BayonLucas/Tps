@@ -103,6 +103,10 @@ int controller_loadFromText(char* path , LinkedList* pArrayListEmployee)
 				}
 			}
 		}
+		if(ret==0)
+		{
+			printf("\n*La carga fue exitosa!*\n\n");
+		}
 		fclose(arch);
 		fclose(AuxArch);
 	}
@@ -275,54 +279,122 @@ int controller_addEmployee(LinkedList* pArrayListEmployee)
 int controller_editEmployee(LinkedList* pArrayListEmployee)
 {
 	int ret=-1;
-	int idMax;
 	int idModif;
+	Employee* modifEmployee;
+	int opModif;
+	char auxNombre[50];
+	int auxHoras;
+	int auxSueldo;
 
-	if(pArrayListEmployee!=NULL )
+	if(pArrayListEmployee!=NULL && ll_isEmpty(pArrayListEmployee)==0)
 	{
-		if(ll_isEmpty(pArrayListEmployee)==0)
+		if(utn_getNumero(&idModif, "Ingrese el id del Empleado a modificar\n", "Error: Ingrese un id activo\n", 0, getLastId(pArrayListEmployee), 3)==0)
 		{
-			idMax=getLastId(pArrayListEmployee);
-			if(utn_getNumero(&idModif, "Ingrese el id del Empleado a modificar\n", "Error: Ingrese un id activo\n", 0, idMax, 3)==0)
+			modifEmployee=getEmployeeById(pArrayListEmployee, idModif);
+			if(modifEmployee!=NULL)
 			{
-
+				printf("=========================================================================\n");
+				printf("id	-	Nombre			-	Horas	-	Sueldo\n");
+				printf("=========================================================================\n");
+				employee_show(modifEmployee);
+				if(utn_getNumero(&opModif, "Que desea modificar?: \n1.Nombre.\n2.Horas.\n3.Sueldo.\n\n", "Error: Ingre alguna de las opciones dadas\n", 1, 3, 10)==0)
+				{
+					switch(opModif)
+					{
+					case 1:
+						if(utn_getStringAlpha(auxNombre, "Ingrese el nuevo nombre del empleado.\n", "Error: Ingrese caracteres válidos.\n\n", 50, 3)==0)
+						{
+							employee_setNombre(modifEmployee, auxNombre);
+							ret=0;
+						}
+						break;
+					case 2:
+						if(utn_getNumero(&auxHoras, "Ingrese la nueva cantidad de horas trabajadas del empleado.\n",
+								"Error: Ingrese un número entero válido.\n\n", 0, 9999, 3)==0)
+						{
+							employee_setHorasTrabajadas(modifEmployee, auxHoras);
+							ret=0;
+						}
+						break;
+					case 3:
+						if(utn_getNumero(&auxSueldo, "Ingrese el nuevo sueldo del empleado.\n",
+								"Error: Ingrese un número entero válido.\n\n", 0, 999999, 3)==0)
+						{
+							employee_setSueldo(modifEmployee, auxSueldo);
+							ret=0;
+						}
+						break;
+					}
+					if(ret==0)
+					{
+						printf("\n*La modificación fue exitosa!*\n");
+					}
+				}
+				else
+				{
+					printf("Error: Excedió el limite de intento al ingresar una opción.\n");
+				}
 			}
-
-
-
+			else
+			{
+				printf("Error: El id ingresado le pertenece a un empleado ya dado de baja.\n");
+			}
 		}
 		else
 		{
-			printf("\nDebe de haber al menos un empleado dado de alta para poder mostrar algo.\n");
+			printf("Error: Al ingresar un id válido.\n");
 		}
-
-
-
 	}
-
-
-
-
-
+	else
+	{
+		printf("\nDebe de haber al menos un empleado dado de alta para poder mostrar algo.\n");
+	}
     return ret;
 }
 
 int controller_removeEmployee(LinkedList* pArrayListEmployee)
 {
 	int ret=-1;
+	int idDelete;
+	Employee* deleteEmployee;
+//	int indexEmployee;
 
-//	if(pArrayListEmployee!=NULL && ll_isEmpty(pArrayListEmployee)==0)
-//	{
-//
-//
-//
-//
-//	}
-//
-
-
-
-
+	if(pArrayListEmployee!=NULL && ll_isEmpty(pArrayListEmployee)==0)
+	{
+		if(utn_getNumero(&idDelete, "Ingrese el id del Empleado a modificar\n", "Error: Ingrese un id activo\n", 0, getLastId(pArrayListEmployee), 3)==0)
+		{
+			deleteEmployee=getEmployeeById(pArrayListEmployee, idDelete);
+			if(deleteEmployee!=NULL)
+			{
+				printf("=========================================================================\n");
+				printf("id	-	Nombre			-	Horas	-	Sueldo\n");
+				printf("=========================================================================\n");
+				employee_show(deleteEmployee);
+				printf("Desea eliminar este empleado?.\n");
+				if(utn_getCaracterSN()==0)
+				{
+					//indexEmployee=ll_indexOf(pArrayListEmployee, deleteEmployee);
+					if(ll_remove(pArrayListEmployee, ll_indexOf(pArrayListEmployee, deleteEmployee))==0)
+					{
+						printf("\n*El empleado fue dado de baja con exito!*\n");
+						ret=0;
+					}
+				}
+			}
+			else
+			{
+				printf("Error: El id ingresado le pertenece a un empleado ya dado de baja.\n");
+			}
+		}
+		else
+		{
+			printf("Error: Al ingresar un id válido.\n");
+		}
+	}
+	else
+	{
+		printf("\nDebe de haber al menos un empleado dado de alta para poder mostrar algo.\n");
+	}
 	return ret;
 }
 
@@ -451,9 +523,9 @@ int getLastId(LinkedList* pArrayListEmployee)
 	return retId;
 }
 
-Employee* getEmployeeById(LinkedList* pArrayListEmployee, int id)
+void* getEmployeeById(LinkedList* pArrayListEmployee, int id)
 {
-	Employee* returnEmployee=NULL;
+	void* returnEmployee=NULL;
 	int i;
 	int idCmp;
 	Employee* auxEmp=NULL;
@@ -465,7 +537,7 @@ Employee* getEmployeeById(LinkedList* pArrayListEmployee, int id)
 			for(i=0;i<ll_len(pArrayListEmployee);i++)
 			{
 				auxEmp=ll_get(pArrayListEmployee, i);
-				if(returnEmployee!=NULL)
+				if(auxEmp!=NULL)
 				{
 					employee_getId(auxEmp, &idCmp);
 					if(idCmp==id)

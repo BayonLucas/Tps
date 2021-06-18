@@ -155,7 +155,7 @@ void employee_show(Employee* this)
 	employee_getHorasTrabajadas(this, &auxHoras);
 	employee_getSueldo(this, &auxSueldo);
 
-	printf("%-4d	-	%-20s	-	%4d	-	%-8d\n", auxId, auxNombre, auxHoras, auxSueldo);
+	printf("%-4d	-	%-20s	-	%4d	-	%8d\n", auxId, auxNombre, auxHoras, auxSueldo);
 
 }
 

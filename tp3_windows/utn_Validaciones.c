@@ -380,12 +380,12 @@ int utn_getCaracterSN(void)
 	int retorno = -1;
 	char c;
 
-	getChar("Ingrese Si 's' o No 'n'", &c);
+	getChar("Ingrese Si 's' o No 'n'\n", &c);
 
 	while(c!='s' && c!='n')
 	{
-		puts("ERROR. OPCION NO VALIDA");
-		getChar("Ingrese Si 's' o No 'n'", &c);
+		puts("\n*ERROR. OPCION NO VALIDA*\n");
+		getChar("Ingrese Si 's' o No 'n'\n", &c);
 	}
 		if(c=='s')
 		{

@@ -92,4 +92,4 @@ int getLastId(LinkedList* pArrayListEmployee);
 /*
  *
  */
-Employee* getEmployeeById(LinkedList* pArrayListEmployee, int id);
+void* getEmployeeById(LinkedList* pArrayListEmployee, int id);

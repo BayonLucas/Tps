@@ -54,7 +54,7 @@ int main()
             	}
             	else
             	{
-            		printf("\nError: Ya se cargaron archivos anteriomente\n");
+            		printf("\nError: Ya se cargaron archivos anteriomente.\n");
             	}
             	break;
             case 2:
@@ -67,7 +67,7 @@ int main()
 				}
 				else
 				{
-					printf("\nError: Ya se cargaron archivos anteriomente\n");
+					printf("\nError: Ya se cargaron archivos anteriomente.\n");
 				}
                 break;
             case 3:
@@ -77,14 +77,7 @@ int main()
             	controller_editEmployee(listaEmpleados);
                 break;
             case 5:
-            	if(ll_isEmpty(listaEmpleados)==0)
-				{
-            		controller_removeEmployee(listaEmpleados);
-				}
-				else
-				{
-					printf("\nDebe de haber al menos un empleado dado de alta para poder mostrar algo.\n");
-				}
+            	controller_removeEmployee(listaEmpleados);
                 break;
             case 6:
             	controller_ListEmployee(listaEmpleados);
@@ -100,6 +93,7 @@ int main()
                 break;
             case 10:
             	printf("\nSalió del programa. Hasta luego.\n");
+            	ll_deleteLinkedList(listaEmpleados);
                 break;
             default:
                 break;
