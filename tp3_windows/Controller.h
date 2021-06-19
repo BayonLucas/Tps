@@ -18,7 +18,6 @@ int controller_loadFromBinary(char* path , LinkedList* pArrayListEmployee);
 
 /** \brief Alta de empleados
  *
- * \param path char*
  * \param pArrayListEmployee LinkedList*
  * \return int
  *
@@ -36,7 +35,6 @@ int controller_editEmployee(LinkedList* pArrayListEmployee);
 
 /** \brief Baja de empleado
  *
- * \param path char*
  * \param pArrayListEmployee LinkedList*
  * \return int
  *
@@ -45,7 +43,6 @@ int controller_removeEmployee(LinkedList* pArrayListEmployee);
 
 /** \brief Listar empleados
  *
- * \param path char*
  * \param pArrayListEmployee LinkedList*
  * \return int
  *
@@ -54,7 +51,6 @@ int controller_ListEmployee(LinkedList* pArrayListEmployee);
 
 /** \brief Ordenar empleados
  *
- * \param path char*
  * \param pArrayListEmployee LinkedList*
  * \return int
  *
@@ -78,11 +74,6 @@ int controller_saveAsText(char* path , LinkedList* pArrayListEmployee);
  *
  */
 int controller_saveAsBinary(char* path , LinkedList* pArrayListEmployee);
-
-/*
- *
- */
-int controller_getLastId( LinkedList* pArrayListEmployee);
 
 /*
  *

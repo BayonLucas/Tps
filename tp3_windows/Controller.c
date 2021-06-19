@@ -42,7 +42,7 @@ int controller_loadFromText(char* path , LinkedList* pArrayListEmployee)
 				printf("Cargar el archivo provocará la perdida de los datos cargados anteriormente. Desea resguardarlos en otro archivo?.\n");
 				if(utn_getCaracterSN()==0)
 				{
-					if((AuxArch=fopen("extraData.csv","w"))==NULL)
+					if((AuxArch=fopen("extraData.csv","a"))==NULL)
 					{
 						printf("\nEl archivo auxiliar no se abrió Correctamente\n");
 					}
@@ -105,7 +105,7 @@ int controller_loadFromText(char* path , LinkedList* pArrayListEmployee)
 		}
 		if(ret==0)
 		{
-			printf("\n*La carga fue exitosa!*\n\n");
+			printf("\n\t*La carga fue exitosa!*\n\n");
 		}
 		fclose(arch);
 		fclose(AuxArch);
@@ -150,7 +150,7 @@ int controller_loadFromBinary(char* path , LinkedList* pArrayListEmployee)
 				printf("Cargar el archivo provocará la perdida de los datos cargados anteriormente. Desea resguardarlos en otro archivo?.\n");
 				if(utn_getCaracterSN()==0)
 				{
-					if((AuxArch=fopen("extraDataBin.bin","wb"))==NULL)
+					if((AuxArch=fopen("extraDataBin.bin","ab"))==NULL)
 					{
 						printf("\nEl archivo auxiliar binario no se abrió Correctamente\n");
 					}
@@ -210,6 +210,10 @@ int controller_loadFromBinary(char* path , LinkedList* pArrayListEmployee)
 				}
 			}
 		}
+		if(ret==0)
+		{
+			printf("\n\t*La carga fue exitosa!*\n\n");
+		}
 		fclose(arch);
 		fclose(AuxArch);
 	}
@@ -263,7 +267,7 @@ int controller_addEmployee(LinkedList* pArrayListEmployee)
 				}
 				else
 				{
-					printf("El id del nuevo empleado es: %d\n\n",auxId);
+					printf("El id del empleado dado de alta es: %d\n\n",auxId);
 				}
 			}
 		}
@@ -327,7 +331,11 @@ int controller_editEmployee(LinkedList* pArrayListEmployee)
 					}
 					if(ret==0)
 					{
-						printf("\n*La modificación fue exitosa!*\n");
+						printf("\n\t*La modificación fue exitosa!*\n");
+						printf("=========================================================================\n");
+						printf("id	-	Nombre			-	Horas	-	Sueldo\n");
+						printf("=========================================================================\n");
+						employee_show(modifEmployee);
 					}
 				}
 				else
@@ -357,7 +365,6 @@ int controller_removeEmployee(LinkedList* pArrayListEmployee)
 	int ret=-1;
 	int idDelete;
 	Employee* deleteEmployee;
-//	int indexEmployee;
 
 	if(pArrayListEmployee!=NULL && ll_isEmpty(pArrayListEmployee)==0)
 	{
@@ -373,10 +380,9 @@ int controller_removeEmployee(LinkedList* pArrayListEmployee)
 				printf("Desea eliminar este empleado?.\n");
 				if(utn_getCaracterSN()==0)
 				{
-					//indexEmployee=ll_indexOf(pArrayListEmployee, deleteEmployee);
-					if(ll_remove(pArrayListEmployee, ll_indexOf(pArrayListEmployee, deleteEmployee))==0)
+					if(ll_remove(pArrayListEmployee, ll_indexOf(pArrayListEmployee, deleteEmployee))==0) // Podría usar un ll_pop y crear una papelera
 					{
-						printf("\n*El empleado fue dado de baja con exito!*\n");
+						printf("\n\t*El empleado fue dado de baja con exito!*\n");
 						ret=0;
 					}
 				}
@@ -488,12 +494,273 @@ int controller_sortEmployee(LinkedList* pArrayListEmployee)
 
 int controller_saveAsText(char* path , LinkedList* pArrayListEmployee)
 {
-    return 1;
+	int ret=-1;
+	FILE* file=NULL;
+	FILE*auxFile=NULL;
+	int i;
+	Employee* pEmployee=NULL;
+	int auxId;
+	char auxNombre[128];
+	int auxHoras;
+	int auxSueldo;
+
+	if(path!=NULL && pArrayListEmployee!=NULL && ll_isEmpty(pArrayListEmployee)==0)
+	{
+		if((file=fopen(path,"r"))==NULL)
+		{
+			if((file=fopen(path,"w"))==NULL)
+			{
+				printf("El archivo no se abrió correctamente.\n");
+			}
+			else
+			{
+				fprintf(file,"ID,NOMBRE,HORAS TRABAJADAS,SUELDO\n");
+				for(i=0;i<ll_len(pArrayListEmployee);i++)
+				{
+					pEmployee=(Employee*)ll_get(pArrayListEmployee, i);
+					if(pEmployee!=NULL)
+					{
+						if( (employee_getId(pEmployee, &auxId)==0) &&
+							(employee_getNombre(pEmployee, auxNombre)==0) &&
+							(employee_getHorasTrabajadas(pEmployee, &auxHoras)==0) &&
+							(employee_getSueldo(pEmployee, &auxSueldo)==0) )
+						{
+							fprintf(file,"%d,%s,%d,%d\n", auxId, auxNombre, auxHoras, auxSueldo);
+							ret=0;
+						}
+						else
+						{
+							free(pEmployee);
+							ret=-1;
+							printf("Error en el resguardo de la información.\n");
+							break;
+						}
+					}
+					else
+					{
+						printf("No hay espacio disponible para realizar el resguardo.\n");
+					}
+				}
+			}
+		}
+		else
+		{
+			printf("Ya existe un archivo. Desea sobreescribirlo?.\n");
+			if(utn_getCaracterSN()==0)
+			{
+				if((file=fopen(path,"w"))==NULL)
+				{
+					printf("El archivo no se abrió correctamente.\n");
+				}
+				else
+				{
+					fprintf(file,"ID,NOMBRE,HORAS TRABAJADAS,SUELDO\n");
+					for(i=0;i<ll_len(pArrayListEmployee);i++)
+					{
+						pEmployee=(Employee*)ll_get(pArrayListEmployee, i);
+						if(pEmployee!=NULL)
+						{
+							if( (employee_getId(pEmployee, &auxId)==0) &&
+								(employee_getNombre(pEmployee, auxNombre)==0) &&
+								(employee_getHorasTrabajadas(pEmployee, &auxHoras)==0) &&
+								(employee_getSueldo(pEmployee, &auxSueldo)==0) )
+							{
+								fprintf(file,"%d,%s,%d,%d\n", auxId, auxNombre, auxHoras, auxSueldo);
+								ret=0;
+							}
+							else
+							{
+								free(pEmployee);
+								ret=-1;
+								printf("Error en el resguardo de la información.\n");
+								break;
+							}
+						}
+						else
+						{
+							printf("No hay espacio disponible para realizar el resguardo.\n");
+						}
+					}
+				}
+			}
+			else
+			{
+				if((auxFile=fopen("extraData.csv","a"))!=NULL)
+				{
+					printf("Por si las dudas, guardamos tus movimientos en el archivo acumulador de respaldo (extraData.csv)\n");
+					for(i=0;i<ll_len(pArrayListEmployee);i++)
+					{
+						pEmployee=(Employee*)ll_get(pArrayListEmployee, i);
+						if(pEmployee!=NULL)
+						{
+							if( (employee_getId(pEmployee, &auxId)==0) &&
+								(employee_getNombre(pEmployee, auxNombre)==0) &&
+								(employee_getHorasTrabajadas(pEmployee, &auxHoras)==0) &&
+								(employee_getSueldo(pEmployee, &auxSueldo)==0) )
+							{
+								fprintf(auxFile,"%d,%s,%d,%d\n", auxId, auxNombre, auxHoras, auxSueldo);
+								ret=0;
+							}
+							else
+							{
+								free(pEmployee);
+								ret=-1;
+								printf("Error en el resguardo de la información.\n");
+								break;
+							}
+						}
+						else
+						{
+							printf("No hay espacio disponible para realizar el resguardo.\n");
+						}
+					}
+				}
+			}
+		}
+		fclose(file);
+		fclose(auxFile);
+		if(ret==0)
+		{
+			printf("\n\t*El archivo se guardo con exito!*\n");
+		}
+	}
+
+    return ret;
 }
 
 int controller_saveAsBinary(char* path , LinkedList* pArrayListEmployee)
 {
-    return 1;
+
+	int ret=-1;
+	FILE* file=NULL;
+	FILE*auxFile=NULL;
+	int i;
+	Employee* pEmployee=NULL;
+	int auxId;
+	char auxNombre[128];
+	int auxHoras;
+	int auxSueldo;
+
+	if(path!=NULL && pArrayListEmployee!=NULL && ll_isEmpty(pArrayListEmployee)==0)
+	{
+		if((file=fopen(path,"rb"))==NULL)
+		{
+			if((file=fopen(path,"wb"))==NULL)
+			{
+				printf("El archivo no se abrió correctamente.\n");
+			}
+			else
+			{
+				for(i=0;i<ll_len(pArrayListEmployee);i++)
+				{
+					pEmployee=(Employee*)ll_get(pArrayListEmployee, i);
+					if(pEmployee!=NULL)
+					{
+						if( (employee_getId(pEmployee, &auxId)==0) &&
+							(employee_getNombre(pEmployee, auxNombre)==0) &&
+							(employee_getHorasTrabajadas(pEmployee, &auxHoras)==0) &&
+							(employee_getSueldo(pEmployee, &auxSueldo)==0) )
+						{
+							fwrite(pEmployee, sizeof(Employee), 1, file);
+							ret=0;
+						}
+						else
+						{
+							free(pEmployee);
+							ret=-1;
+							printf("Error en el resguardo de la información.\n");
+							break;
+						}
+					}
+					else
+					{
+						printf("No hay espacio disponible para realizar el resguardo.\n");
+					}
+				}
+			}
+		}
+		else
+		{
+			printf("Ya existe un archivo binario. Desea sobreescribirlo?.\n");
+			if(utn_getCaracterSN()==0)
+			{
+				if((file=fopen(path,"wb"))==NULL)
+				{
+					printf("El archivo no se abrió correctamente.\n");
+				}
+				else
+				{
+					for(i=0;i<ll_len(pArrayListEmployee);i++)
+					{
+						pEmployee=(Employee*)ll_get(pArrayListEmployee, i);
+						if(pEmployee!=NULL)
+						{
+							if( (employee_getId(pEmployee, &auxId)==0) &&
+								(employee_getNombre(pEmployee, auxNombre)==0) &&
+								(employee_getHorasTrabajadas(pEmployee, &auxHoras)==0) &&
+								(employee_getSueldo(pEmployee, &auxSueldo)==0) )
+							{
+								fwrite(pEmployee, sizeof(Employee), 1, file);
+								ret=0;
+							}
+							else
+							{
+								free(pEmployee);
+								ret=-1;
+								printf("Error en el resguardo de la información.\n");
+								break;
+							}
+						}
+						else
+						{
+							printf("No hay espacio disponible para realizar el resguardo.\n");
+						}
+					}
+				}
+			}
+			else
+			{
+				if((auxFile=fopen("extraDataBin.bin","ab"))!=NULL)
+				{
+					printf("Por si las dudas, guardamos tus movimientos en el archivo acumulador de respaldo (extraDataBin.bin)\n");
+					for(i=0;i<ll_len(pArrayListEmployee);i++)
+					{
+						pEmployee=(Employee*)ll_get(pArrayListEmployee, i);
+						if(pEmployee!=NULL)
+						{
+							if( (employee_getId(pEmployee, &auxId)==0) &&
+								(employee_getNombre(pEmployee, auxNombre)==0) &&
+								(employee_getHorasTrabajadas(pEmployee, &auxHoras)==0) &&
+								(employee_getSueldo(pEmployee, &auxSueldo)==0) )
+							{
+								fwrite(pEmployee, sizeof(Employee), 1, auxFile);
+								ret=0;
+							}
+							else
+							{
+								free(pEmployee);
+								ret=-1;
+								printf("Error en el resguardo de la información.\n");
+								break;
+							}
+						}
+						else
+						{
+							printf("No hay espacio disponible para realizar el resguardo.\n");
+						}
+					}
+				}
+			}
+		}
+		fclose(file);
+		fclose(auxFile);
+		if(ret==0)
+		{
+			printf("\n\t*El archivo se guardo con exito!*\n");
+		}
+	}
+
+    return ret;
 }
 
 int getLastId(LinkedList* pArrayListEmployee)
@@ -551,36 +818,3 @@ void* getEmployeeById(LinkedList* pArrayListEmployee, int id)
 	}
 	return returnEmployee;
 }
-
-
-
-
-
-//	int i;
-//	Employee* auxEmployee;
-//	int cant;
-
-//		{
-//			if(ll_isEmpty(pArrayListEmployee)==1)
-//			{
-//				fclose(arch);
-//				ret=0;
-//			}
-//			else
-//			{
-//				for(i=0;i<ll_len(pArrayListEmployee);i++)
-//				{
-//					auxEmployee=(Employee*)ll_get(pArrayListEmployee, i);
-//					cant=fwrite(auxEmployee,sizeof(Employee), 1, arch);
-//					ret=0;
-//					if(cant!=1)
-//					{
-//						free(auxEmployee);
-//						ret=-1;
-//						break;
-//					}
-//				}
-//				fclose(arch);
-//			}
-//		}
-

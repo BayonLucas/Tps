@@ -3,6 +3,7 @@
 #include "LinkedList.h"
 #include "Controller.h"
 #include "Employee.h"
+#include "utn_Validaciones.h"
 
 /****************************************************
     Menu:
@@ -24,6 +25,7 @@ int main()
 
     int option = 0;
     int flagFileLoaded=0;
+    int flagFileSaved=0;
 
     LinkedList* listaEmpleados = ll_newLinkedList();
     do{
@@ -86,16 +88,39 @@ int main()
             	controller_sortEmployee(listaEmpleados);
                 break;
             case 8:
-
+            	if(controller_saveAsText("data.csv", listaEmpleados)==0)
+            	{
+            		flagFileSaved=1;
+            	}
                 break;
             case 9:
-
+            	if(controller_saveAsBinary("dataBi.bin", listaEmpleados)==0)
+				{
+					flagFileSaved=1;
+				}
                 break;
             case 10:
-            	printf("\nSalió del programa. Hasta luego.\n");
-            	ll_deleteLinkedList(listaEmpleados);
+            	if(flagFileSaved!=0)
+            	{
+					printf("\nSalió del programa. Hasta luego.\n");
+					ll_deleteLinkedList(listaEmpleados);
+            	}
+            	else
+            	{
+            		printf("\nDesea salir sin guardar?.\n");
+            		if(utn_getCaracterSN()==0)
+            		{
+            			printf("\nSalió del programa. Hasta luego.\n");
+						ll_deleteLinkedList(listaEmpleados);
+            		}
+            		else
+            		{
+            			option=8;
+            		}
+            	}
                 break;
             default:
+            	printf("\nIngrese alguna de las opciones dadas, por favor.\n\n");
                 break;
         }
     }while(option != 10);
