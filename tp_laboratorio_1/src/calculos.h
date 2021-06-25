@@ -45,6 +45,6 @@ int dividir(int num1, int num2, float* ptotal);
  * param2 recibe una dirección de memoria donde se depositará el resultado del factoreo.
  * la función retorna 0 si no funcionó. Caso contrario, retornará 1.
  * */
-long int factorial(int n, long int* pTotal);
+int factorial(int n, long int* pTotal);
 
 #endif /* CALCULOS_H_ */

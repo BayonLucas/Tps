@@ -57,7 +57,7 @@ int dividir(int num1, int num2, float* pTotal)
 	return ret;
 }
 
-long int factorial(int n, long int* pTotal)
+int factorial(int n, long int* pTotal)
 {
 	long int aux;
 	int i;
@@ -67,7 +67,7 @@ long int factorial(int n, long int* pTotal)
 
 	if(pTotal!=NULL)
 	{
-		if(n==1)
+		if(n==1 || n==0)
 		{
 			aux=1;
 		}
